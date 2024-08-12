@@ -241,4 +241,38 @@ public class CosNConfigKeys extends CommonConfigurationKeys {
 
     public static final String COSN_READ_BUFFER_ALLOCATE_TIMEOUT_SECONDS = "fs.cosn.read.buffer.allocate.timeout.seconds";
     public static final long DEFAULT_READ_BUFFER_ALLOCATE_TIMEOUT_SECONDS = 5;
+
+    // Whether to use optimized read input stream.
+    public static final String COSN_READ_INPUTSTREAM_OPTIMIZED_ENABLED = "fs.cosn.read.inputstream.optimized.enabled";
+    public static final boolean DEFAULT_READ_INPUTSTREAM_OPTIMIZED_ENABLED = false;
+
+    public static final long DEFAULT_READAHEAD_RANGE = 64 * 1024;
+
+    /**
+     * Which input strategy to use for buffering, seeking and similar when
+     * reading data.
+     * Value: {@value}
+     */
+    @InterfaceStability.Unstable
+    public static final String INPUT_FADVISE =
+            "fs.cosn.experimental.input.fadvise";
+
+    @InterfaceStability.Unstable
+    public static final String INPUT_FADV_NORMAL = "normal";
+
+    /**
+     * Optimized for sequential access.
+     * Value: {@value}
+     */
+    @InterfaceStability.Unstable
+    public static final String INPUT_FADV_SEQUENTIAL = "sequential";
+
+    /**
+     * Optimized purely for random seek+read/positionedRead operations;
+     * The performance of sequential IO may be reduced in exchange for
+     * more efficient {@code seek()} operations.
+     * Value: {@value}
+     */
+    @InterfaceStability.Unstable
+    public static final String INPUT_FADV_RANDOM = "random";
 }

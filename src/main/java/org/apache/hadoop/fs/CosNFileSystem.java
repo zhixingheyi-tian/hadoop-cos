@@ -939,10 +939,17 @@ public class CosNFileSystem extends FileSystem {
         LOG.debug("Opening '" + f + "' for reading");
         Path absolutePath = makeAbsolute(f);
         String key = pathToKey(absolutePath);
-        return new FSDataInputStream(new CosNFSBufferedFSInputStream(
-                new CosNFSInputStream(this.getConf(), nativeStore, statistics, key,
-                        fileStatus.getLen(), this.boundedIOThreadPool),
-                bufferSize));
+        if(this.getConf().getBoolean(CosNConfigKeys.COSN_READ_INPUTSTREAM_OPTIMIZED_ENABLED,
+                CosNConfigKeys.DEFAULT_READ_INPUTSTREAM_OPTIMIZED_ENABLED)) {
+            return new FSDataInputStream(
+                    new OptimizedCosNFSInputStream(this.getConf(), nativeStore, statistics, bucket, key,
+                            fileStatus.getLen(), this.boundedIOThreadPool));
+        } else {
+            return new FSDataInputStream(new CosNFSBufferedFSInputStream(
+                    new CosNFSInputStream(this.getConf(), nativeStore, statistics, key,
+                            fileStatus.getLen(), this.boundedIOThreadPool),
+                    bufferSize));
+        }
     }
 
     @Override

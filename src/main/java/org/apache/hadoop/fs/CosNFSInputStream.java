@@ -115,21 +115,21 @@ public class CosNFSInputStream extends FSInputStream {
         }
     }
 
-    private FileSystem.Statistics statistics;
+    protected FileSystem.Statistics statistics;
     private final Configuration conf;
-    private final NativeFileSystemStore store;
-    private final String key;
-    private long position;
-    private long nextPos;
+    protected final NativeFileSystemStore store;
+    protected final String key;
+    protected long position;
+    protected long nextPos;
     private long lastByteStart;
-    private long fileSize;
+    protected long fileSize;
     private long partRemaining;
     private long bufferStart;
     private long bufferEnd;
     private final long preReadPartSize;
     private final int maxReadPartNumber;
     private ReadBuffer currentReadBuffer;
-    private final AtomicBoolean closed;
+    protected final AtomicBoolean closed;
     private final int socketErrMaxRetryTimes;
 
     private final ExecutorService readAheadExecutorService;
@@ -455,7 +455,7 @@ public class CosNFSInputStream extends FSInputStream {
         setPreviousReadBuffer(null);
     }
 
-    private void checkOpened() throws IOException {
+    protected void checkOpened() throws IOException {
         if(this.closed.get()) {
             throw new IOException(FSExceptionMessages.STREAM_IS_CLOSED);
         }
